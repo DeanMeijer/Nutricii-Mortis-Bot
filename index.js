@@ -4,6 +4,8 @@ const bot = new commando.Client();
 bot.registry.registerGroup('random', 'Random');
 bot.registry.registerGroup('pm', 'Pm');
 bot.registry.registerGroup('karaoke', 'Karaoke');
+bot.registry.registerGroup('lootbox', 'Lootbox');
+bot.registry.registerGroup('calendar', 'Calendar');
 bot.registry.registerDefaults();
 bot.registry.registerCommandsIn(__dirname + "/commands")
 
