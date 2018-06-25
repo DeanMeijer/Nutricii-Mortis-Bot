@@ -1,28 +1,43 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const settings = require('./settings.json');
+const config = require('./config.json');
+const sql = require("sqlite");
+sql.open("./score.sqlite");
 
 client.on('ready',() => {
-	console.log('i\'m Online\nI\'m Online');
+	console.log(`Bot is gestart, met ${client.users.size} users, in ${client.channels.size} channels en ${client.guilds.size} guilds.`);
+	client.user.setActivity(`Draait momenteel op ${client.guilds.size} servers`);
 })
 
-var prefix = "//"
-client.on('message', message => {
-	if(message.content.startsWith(prefix + "test")) {
-		message.channel.send('Nutricii Mortis bot is working!!');
+client.on("message", async message => {
+	//Negeer commands van andere bots zodat we geen spam loop krijgen.
+	if(message.author.bot) return;
+	//Negeer commands die niet starten met onze prefix.
+	if(message.content.indexOf(config.prefix) !== 0) return;
+
+	//Hier defineren we de command en delen dit op in verschillende argumenten.
+	//Voorbeeld command "//hallo ik ben Dean", krijg je de volgende resultaat
+	//command === hallo
+	//args = ["ik", "ben", "Dean"];
+	const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+	const command = args.shift().toLowerCase();
+
+	//Alleen gebruikers met de rol "Nani!?" kunnen roles toevoegen aan gebruikers.
+	if(message.member.roles.some(r=>["Nani!?"].includes(r.name)) ) {
+		if (command === "addrole") {
+		  let [user, role] = args;
+			let userToModify = message.mentions.members.first();
+			let roleToAdd = message.mentions.roles.first();
+			userToModify.addRole(roleToAdd).catch(console.error);
+
+		  message.reply(`gives ${user}, the following role ${role}`);
+		}
 	}
+
+	if (command === "test") {
+		message.channel.send("Bot is live!");
+	}
+
 });
 
-client.on('message', message => {
-	if(message.content.startsWith(prefix + "Dean")) {
-		message.channel.send('Dean\'s pretty fly');
-	}else if (message.content.startsWith(prefix + "David")) {
-		message.channel.send('David\'s pretty fly');
-	}else if (message.content.startsWith(prefix + "Coconut")) {
-		message.channel.send('Coconut\'s pretty cool guy!');
-	}else if (message.content.startsWith(prefix + "Gunilla")) {
-		message.channel.send('Gunilla\'s pretty Grill');
-	}
-})
-
-client.login(settings.token);
+client.login(config.token);
