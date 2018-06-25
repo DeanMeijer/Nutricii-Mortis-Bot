@@ -1,15 +1,17 @@
 {
-  "name": "nutriciimortisbot",
-  "version": "0.0.1",
-  "description": "Nutricii Mortis Bot - Created by the Nutricii Mortis DevTeam",
-  "main": "app.js",
+  "name": "first",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^11.3.2",
+    "discord.js-commando": "^0.10.0",
+    "update": "^0.7.4"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Nutricii Mortis DevTeam",
-  "license": "MIT",
-  "dependencies": {
-    "bufferutil": "^3.0.3",
-    "discord.js": "^11.3.2"
-  }
+  "author": "",
+  "license": "ISC"
 }
